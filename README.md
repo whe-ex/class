@@ -27,9 +27,9 @@
 
 ## 🛠️ 使用工具
 
-- 🛰️ CiteSpace —— 文献计量分析与可视化
-- 🕸️ VOSviewer —— 关键词共现与网络分析
-- 🐍 Python —— 数据处理与统计分析
+-  CiteSpace —— 文献计量分析与可视化
+-  VOSviewer —— 关键词共现与网络分析
+-  Python —— 数据处理与统计分析
 
 **常用 Python 库：**
 - pandas
@@ -59,12 +59,6 @@
 - 🧠 研究热点分析结果
 - 🚀 前沿趋势分析
 
-## 🤝 分工说明
-
-- **成员A**：数据收集与整理（`data`）
-- **成员B**：可视化分析（VOSviewer / CiteSpace）
-- **成员C**：Python数据处理（`src`）
-- **成员D**：报告与论文撰写（`reports` / `paper`）
 
 ## ♻️ 可复现性说明
 
