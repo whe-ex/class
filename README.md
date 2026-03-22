@@ -1,5 +1,5 @@
 # 第⑦组
-## 分工内容
+## 成员分工内容
 | 姓名   | 学号   | 分工内容   |
 |-------|-------|-------|
 | 数据1 | 数据2 | 项目统筹与进度管理 |
@@ -12,7 +12,6 @@
 
 
 这是 `单行代码` 示例。
-![图片描述](图片链接)
 ![Logo](https://github.githubassets.com/images/modules/logos_page/Octocat.png)
 [GitHub 官网](https://github.com)
 > 这是引用内容，被缩进显示。
