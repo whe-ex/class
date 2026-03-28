@@ -9,4 +9,4 @@ wos_query: |
   AND TS=("China" OR "Chinese" )
   AND PY=2015-2025
   AND DT=("Article" OR "Review")
-  AND LA=("Chinese" OR "English")
+  AND LA= English
