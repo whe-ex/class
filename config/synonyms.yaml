@@ -1,7 +1,7 @@
 sic_power_devices:
-  -silicon carbide
-  -SiC
-  SiC power device
+  - silicon carbide
+  - SiC
+  - SiC power device
   - SiC MOSFET
   - SiC technology
   - SiC application
