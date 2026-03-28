@@ -1,0 +1,30 @@
+sic_power_devices:
+  -silicon carbide
+  -SiC
+  SiC power device
+  - SiC MOSFET
+  - SiC technology
+  - SiC application
+  - wide bandgap semiconductor
+  - SiC inverter
+  - SiC rectifier
+
+research_hotspots:
+  - efficiency
+  - reliability
+  - thermal management
+  - power density
+  - switching speed
+  - cost reduction
+  - integration
+  - performance optimization
+
+applications:
+  - automotive
+  - renewable energy
+  - industrial electronics
+  - power grids
+  - aerospace
+  - consumer electronics
+  - telecommunications
+  - transportation
