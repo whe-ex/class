@@ -1,12 +1,12 @@
 version: "v0.1"
 date: "2026-03-28"
-datebase: "Web of Science Core Collection"
+datebase: "Google scholar"
 time_window: "2015-01-01 to 2025-12-31"
 document_types: ["Article", "Review"]
-languages: ["Chinese", "English"]
+languages: ["English"]
 wos_query: |
   TS=("silicon carbide" OR "SiC" OR "SiC technology" OR "SiC application" OR "power device" OR "power semiconductor")
-  AND TS=("China" OR "Chinese" )
+  AND TS=("Science research" OR "academic research" OR "China" )
   AND PY=2015-2025
   AND DT=("Article" OR "Review")
   AND LA= English
