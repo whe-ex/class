@@ -4,7 +4,7 @@ datebase: "Google scholar"
 time_window: "2015-01-01 to 2025-12-31"
 document_types: ["Article", "Review"]
 languages: ["English"]
-wos_query: |
+gs_query: |
   TS=("silicon carbide" OR "SiC" OR "SiC technology" OR "SiC application" OR "power device" OR "power semiconductor")
   AND TS=("Science research" OR "academic research" OR "China" )
   AND PY=2015-2025
