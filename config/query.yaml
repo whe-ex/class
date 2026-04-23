@@ -6,7 +6,7 @@ document_types: ["Article", "Review"]
 languages: ["English"]
 gs_query: |
   TS=("silicon carbide" OR "SiC" OR "SiC technology" OR "SiC application" OR "power device" OR "power semiconductor" OR "SiC MOSFET")
-  AND TS=("Science research" OR "academic research"  )
+  AND TS=("Science research" OR "academic research" OR"CHINA" )
   AND PY=2015-2025
   AND DT=("Article" OR "Review")
   AND LA= English
