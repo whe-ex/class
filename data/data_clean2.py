@@ -3,8 +3,8 @@ import os
 import datetime
 
 # ========== 1. 配置 ==========
-RAW_DIR = './data/raw'
-PROC_DIR = './data/processed'
+RAW_DIR = '.'
+PROC_DIR = './processed'
 os.makedirs(RAW_DIR, exist_ok=True)
 os.makedirs(PROC_DIR, exist_ok=True)
 DATA_FILES = [
