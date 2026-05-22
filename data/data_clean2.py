@@ -13,107 +13,174 @@ DATA_FILES = [
     'raw2.csv'
 ]
 
-# WoS英文列名 → 中文标准列名映射（最终修正版）
 COLUMN_MAPPING = {
-    'Article Title': '标题',  # 修正：WoS标题列名是Article Title
-    'Authors': '作者',
-    'Affiliations': '机构',
-    'Publication Year': '年份',
-    'Source Title': '期刊',
-    'Abstract': '摘要',
-    'Author Keywords': '关键词',
-    'Cited References': '参考文献',  # 如果导出时没勾选这个字段，会自动补空
-    'DOI': 'DOI'
+    'Article Title': 'TI',
+    'Authors': 'AU',
+    'Author Full Names': 'AF',
+    'Affiliations': 'C1',
+    'Publication Year': 'PY',
+    'Source Title': 'SO',
+    'Abstract': 'AB',
+    'Author Keywords': 'DE',
+    'Keywords Plus': 'ID',
+    'Cited References': 'CR',
+    'DOI': 'DI',
+    'Document Type': 'DT',
+    'Times Cited': 'TC',
+    'Accession Number': 'UT',
+    'ISSN': 'SN',
+    'eISSN': 'EI',
+    'ISBN': 'BN',
+    'Volume': 'VL',
+    'Issue': 'IS',
+    'Start Page': 'BP',
+    'End Page': 'EP',
+    'PubMed ID': 'PM',
+    'Language': 'LA',
+    'Publication Type': 'PT',
+    'Conference Title': 'CT',
+    'Conference Date': 'CY',
+    'Conference Location': 'CL',
+    'Book Title': 'BK',
+    'Editor': 'BE',
+    'Publisher': 'PU',
+    'Cited Reference Count': 'NR',
 }
 
-REQUIRED_FIELDS = list(COLUMN_MAPPING.values())
+CITESPACE_REQUIRED = ['PT', 'TI', 'AU', 'PY', 'SO', 'AB', 'DE', 'UT', 'CR', 'DI', 'TC', 'DT']
 
 # ========== 2. 基础功能 ==========
 def read_csv_utf8(path):
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"文件不存在: {path}")
     return pd.read_csv(path, encoding='utf-8', dtype=str, keep_default_na=False)
 
-def export_csv_utf8(df, path):
-    df.to_csv(path, encoding='utf-8', index=False, quoting=1)
+def export_wos_txt(df, path):
+    df.to_csv(path, sep='\t', encoding='utf-8', index=False, quoting=1)
 
-def field_missing_ratio(df):
-    return df[REQUIRED_FIELDS].replace('', pd.NA).isna().mean().round(3).to_dict()
+def field_missing_ratio(df, fields):
+    check_fields = [f for f in fields if f in df.columns]
+    return df[check_fields].replace('', pd.NA).isna().mean().round(3).to_dict()
 
 def deduplicate(df):
     before = len(df)
-    if 'DOI' in df.columns and df['DOI'].nunique() > 1:
-        df = df.drop_duplicates(subset=['DOI'])
-    else:
-        df = df.drop_duplicates(subset=['标题'])
+    
+    if 'UT' in df.columns:
+        df_with_ut = df[df['UT'] != '']
+        df_no_ut = df[df['UT'] == '']
+        
+        if len(df_with_ut) > 0:
+            df_with_ut = df_with_ut.drop_duplicates(subset=['UT'], keep='first')
+        
+        if 'TI' in df_no_ut.columns and len(df_no_ut) > 0:
+            df_no_ut = df_no_ut.drop_duplicates(subset=['TI'], keep='first')
+            
+        df = pd.concat([df_with_ut, df_no_ut], ignore_index=True)
+    elif 'TI' in df.columns:
+        df = df.drop_duplicates(subset=['TI'], keep='first')
+    
     after = len(df)
     return df, before - after
 
 def ambiguity_rate(df):
-    author_amb = df['作者'].value_counts()
-    org_amb = df['机构'].value_counts()
-    author_amb_cnt = (author_amb > 1).sum()
-    org_amb_cnt = (org_amb > 1).sum()
-    return {'作者同名计数': int(author_amb_cnt), '机构同名计数': int(org_amb_cnt)}
+    result = {}
+    if 'AU' in df.columns:
+        author_amb = df['AU'].value_counts()
+        result['作者同名计数'] = int((author_amb > 1).sum())
+    if 'C1' in df.columns:
+        org_amb = df['C1'].value_counts()
+        result['机构同名计数'] = int((org_amb > 1).sum())
+    return result
 
 def filter_invalid_records(df):
-    """过滤掉只有DOI、其他所有字段都为空的无效记录"""
     before = len(df)
-    non_doi_fields = [col for col in REQUIRED_FIELDS if col != 'DOI']
-    df = df[
-        (df[non_doi_fields] != '').any(axis=1) & 
-        (df[REQUIRED_FIELDS] != '').any(axis=1)
-    ]
+    
+    if 'TI' in df.columns:
+        df = df[df['TI'] != '']
+    else:
+        key_fields = ['DI', 'UT']
+        available_keys = [f for f in key_fields if f in df.columns]
+        if available_keys:
+            df = df[(df[available_keys] != '').any(axis=1)]
+    
     after = len(df)
     return df, before - after
+
+def ensure_citespace_format(df):
+    if 'PT' not in df.columns:
+        df['PT'] = 'J'
+    
+    if 'DT' in df.columns and 'PT' in df.columns:
+        df['PT'] = df['PT'].replace('', pd.NA).fillna(df['DT'])
+    
+    for col in CITESPACE_REQUIRED:
+        if col not in df.columns:
+            df[col] = ''
+    
+    ordered_cols = [col for col in CITESPACE_REQUIRED if col in df.columns]
+    ordered_cols += [col for col in df.columns if col not in ordered_cols]
+    
+    return df[ordered_cols]
 
 # ========== 3. 主流程 ==========
 stamp = datetime.datetime.now().isoformat(timespec='seconds')
 quality_report = []
+
 for fname in DATA_FILES:
     raw_path = os.path.join(RAW_DIR, fname)
-    proc_path = os.path.join(PROC_DIR, fname.replace('.csv', '_cleaned.csv'))
+    base_name = fname.replace('.csv', '').replace(' ', '_')
+    proc_path = os.path.join(PROC_DIR, f'download_{base_name}.txt')
 
-    df = read_csv_utf8(raw_path)
-
-    # 新增：自动映射英文列名到中文列名
+    print(f"正在处理: {fname} ...")
+    
+    try:
+        df = read_csv_utf8(raw_path)
+    except FileNotFoundError as e:
+        print(f"  ⚠️ {e}")
+        continue
+    
+    original_count = len(df)
     df = df.rename(columns=COLUMN_MAPPING)
-
-    # 补全缺失字段，按规范顺序
-    for col in REQUIRED_FIELDS:
-        if col not in df.columns:
-            df[col] = ''
-    df = df[REQUIRED_FIELDS]
-
-    miss_ratio = field_missing_ratio(df)
-    df, dup_cnt = deduplicate(df)
     df, invalid_cnt = filter_invalid_records(df)
+    df, dup_cnt = deduplicate(df)
+    df = ensure_citespace_format(df)
+    
+    miss_ratio = field_missing_ratio(df, CITESPACE_REQUIRED)
     ambi = ambiguity_rate(df)
-    ref_missing = (df['参考文献'] == '').sum()
+    ref_missing = (df['CR'] == '').sum() if 'CR' in df.columns else 0
+    ut_missing = (df['UT'] == '').sum() if 'UT' in df.columns else len(df)
+    final_count = len(df)
+    
+    export_wos_txt(df, proc_path)
+    print(f"  ✓ 已导出: {proc_path} ({final_count}条记录)")
 
-    export_csv_utf8(df, proc_path)
-
-    # 质量报告
     quality_report.append(f"### {fname}")
-    quality_report.append(f"- 原始记录数: {len(df) + dup_cnt + invalid_cnt}")
-    quality_report.append(f"- 清洗后记录数: {len(df)}")
-    quality_report.append(f"- 字段缺失率: {miss_ratio}")
-    quality_report.append(f"- 去重数: {dup_cnt}")
+    quality_report.append(f"- 原始记录数: {original_count}")
+    quality_report.append(f"- 清洗后记录数: {final_count}")
     quality_report.append(f"- 过滤无效记录数: {invalid_cnt}")
-    quality_report.append(f"- 作者歧义数: {ambi['作者同名计数']}；机构歧义数: {ambi['机构同名计数']}")
-    quality_report.append(f"- 缺参考文献条数: {ref_missing}\n")
+    quality_report.append(f"- 去重数: {dup_cnt}")
+    quality_report.append(f"- 核心字段缺失率: {miss_ratio}")
+    quality_report.append(f"- UT缺失数: {ut_missing}")
+    if '作者同名计数' in ambi:
+        quality_report.append(f"- 作者歧义数: {ambi.get('作者同名计数', 0)}")
+    if '机构同名计数' in ambi:
+        quality_report.append(f"- 机构歧义数: {ambi.get('机构同名计数', 0)}")
+    quality_report.append(f"- 缺参考文献条数: {ref_missing}")
+    quality_report.append(f"- 输出文件: download_{base_name}.txt\n")
 
 # ========== 4. 生成报告 ==========
-with open(os.path.join(PROC_DIR, 'data_quality.md'), 'w', encoding='utf-8') as f:
-    f.write(f"# 数据质量报告\n\n自动生成时间：{stamp}\n\n")
+with open(os.path.join(PROC_DIR, '数据质量报告.txt'), 'w', encoding='utf-8') as f:
+    f.write(f"# 数据质量报告\n\n")
+    f.write(f"生成时间：{stamp}\n\n")
+    f.write(f"## 文件列表\n\n")
+    for fname in DATA_FILES:
+        base_name = fname.replace('.csv', '').replace(' ', '_')
+        f.write(f"- download_{base_name}.txt\n")
+    f.write(f"\n## 清洗详情\n\n")
     f.write('\n'.join(quality_report))
 
-with open(os.path.join(PROC_DIR, 'README.md'), 'w', encoding='utf-8') as f:
-    f.write(f"# 数据处理说明\n\n")
-    f.write(f"本目录下数据已按课件标准清洗。原始数据在 raw/，清理结果在 processed/。\n")
-    f.write(f"- 导出时间戳：{stamp}\n\n")
-    f.write(f"## 字段字典\n")
-    for col in REQUIRED_FIELDS:
-        f.write(f"- {col}\n")
-    f.write("\n## 质量报告见 data_quality.md\n")
-
-print("✅ 全部清洗完成！已自动适配WoS英文列名格式。")
-print("📊 质量报告与清洗后数据已在 data/processed/ 目录生成。")
+print("\n" + "="*60)
+print("✅ 全部清洗完成！")
+print("="*60)
+print(f"\n📁 输出目录: {PROC_DIR}")
+print(f"📄 详细报告: {os.path.join(PROC_DIR, '数据质量报告.txt')}")
