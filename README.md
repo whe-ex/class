@@ -19,22 +19,34 @@
 ## 3.项目结构
 
 ```
-├── config/               # 配置文件目录
-│   ├── query.yaml        # 查询配置
-│   └── synonyms.yaml     # 同义词配置
-├── data/                 # 数据目录
-│   ├── processed/        # 处理后的数据
-│   ├── raw/              # 原始数据
-│   └── data_clean2.py    # 数据清洗代码
-├── docs/                 # 文档说明
+├── config/                      # 配置文件目录
+│   ├── query.yaml
+│   └── synonyms.yaml
+├── data/                        # 数据目录
+│   ├── processed/               # 已处理数据
+│   │   ├── RAW3_cleaned.csv
+│   │   ├── citations (1)_cleaned.csv
+│   │   ├── raw2_cleaned.csv
+│   │   └── README.md
+│   ├── raw/                     # 原始数据
+│   │   ├── RAW3.csv
+│   │   ├── citations (1).csv
+│   │   ├── raw2.csv
+│   │   ├── text1.txt
+│   │   ├── text2.txt
+│   │   ├── text3.txt
+│   │   ├── text4.txt
+│   │   └── text5.txt
+│   └── data_clean2.py           # 数据清洗脚本
+├── docs/
 │   └── direction_candidates.md
-├── output/               # 分析输出结果
-├── paper/                # 论文相关内容
-├── reports/              # 分析报告与过程
-│   └── data_quality.md   # 数据质量分析报告
-├── src/                  # 源代码
-├── README.md             # 项目说明文件
-└── requirements.txt      # Python依赖包清单
+├── output/                      # 分析输出结果
+├── paper/                       # 论文相关内容
+├── reports/                     # 分析报告与过程
+│   └── data_quality.md
+├── src/                         # 源代码
+├── README.md                    # 项目说明文件
+└── requirements.txt             # Python依赖包清单
 ```
 
 ## 4.工具与软件环境
