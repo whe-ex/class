@@ -31,11 +31,12 @@
 ├── output/               # 分析输出结果
 ├── paper/                # 论文相关内容
 ├── reports/              # 分析报告与过程
+│   └── data_quality.md   # 数据质量分析报告
 ├── src/                  # 源代码
 ├── README.md             # 项目说明文件
 └── requirements.txt      # Python依赖包清单
-
 ```
+
 ## 4.工具与软件环境
 
 本项目采用以下工具与编程环境完成核心分析与展示工作：
@@ -45,7 +46,7 @@
 - Python（pandas、numpy、matplotlib）：数据处理和绘图
 
 ---
-
+  
 ## 5.操作流程概述
 
 1. 数据采集  
@@ -62,7 +63,16 @@
 
 ---
 
-## 6.复现性说明
+## 6.已完成内容
+
+- 数据目录、配置文件、文档结构搭建
+- 数据清洗脚本：`data/data_clean2.py`
+- 配置文件：`config/query.yaml`、`config/synonyms.yaml`
+- 方向候选文档：`docs/direction_candidates.md`
+- 数据质量分析报告：`reports/data_quality.md`
+- requirements.txt 依赖清单初始化
+
+## 7.复现性说明
 
 - 检索关键词统一，确保分析一致性
 - 原始数据文件与所用脚本全部保留
