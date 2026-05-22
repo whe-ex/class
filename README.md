@@ -16,14 +16,25 @@
 - GaN射频器件研究热点与演进趋势计量分析
 - AI加速芯片研究热点与演进趋势计量分析
 
-## 🧱 项目结构
+## 项目结构
 
 ```
-├── data/      # 存放原始文献数据
-├── src/       # 数据处理与分析代码
-├── outputs/   # 分析结果（图表、网络图等）
-├── reports/   # 分析报告与过程说明
-└── paper/     # 最终论文稿件
+├── config/               # 配置文件目录
+│   ├── query.yaml        # 查询配置
+│   └── synonyms.yaml     # 同义词配置
+├── data/                 # 数据目录
+│   ├── processed/        # 处理后的数据
+│   ├── raw/              # 原始数据
+│   └── data_clean2.py    # 数据清洗代码
+├── docs/                 # 文档说明
+│   └── direction_candidates.md
+├── output/               # 分析输出结果
+├── paper/                # 论文相关内容
+├── reports/              # 分析报告与过程
+├── src/                  # 源代码
+├── README.md             # 项目说明文件
+└── requirements.txt      # Python依赖包清单
+
 ```
 ## 工具与软件环境
 
