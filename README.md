@@ -40,7 +40,12 @@
 │   └── data_clean2.py           # 数据清洗脚本
 ├── docs/
 │   └── direction_candidates.md
-├── output/                      # 分析输出结果
+├── output/                  # 分析结果与可视化
+│   ├── 作者合作.png
+│   ├── 共被引网络分析报告.md
+│   ├── 文献引用特征分析表.xlsx
+│   ├── 时间线.png
+│   └── 聚类图.png
 ├── paper/                       # 论文相关内容
 ├── reports/                     # 分析报告与过程
 │   └── data_quality.md
@@ -77,12 +82,18 @@
 
 ## 6.已完成内容
 
-- 数据目录、配置文件、文档结构搭建
+- 数据目录、配置文件、文档结构初步搭建
 - 数据清洗脚本：`data/data_clean2.py`
 - 配置文件：`config/query.yaml`、`config/synonyms.yaml`
 - 方向候选文档：`docs/direction_candidates.md`
 - 数据质量分析报告：`reports/data_quality.md`
 - requirements.txt 依赖清单初始化
+- 主要分析结果（见 output 文件夹）：
+    - 聚类分析图（`output/聚类图.png`）
+    - 主题演化时间线图（`output/时间线.png`）
+    - 作者合作网络图（`output/作者合作.png`）
+    - 共被引网络分析报告（`output/共被引网络分析报告.md`）
+    - 文献引用特征分析表（`output/文献引用特征分析表.xlsx`）
 
 ## 7.复现性说明
 
