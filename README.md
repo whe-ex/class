@@ -37,7 +37,6 @@
 │   │   ├── text3.txt
 │   │   ├── text4.txt
 │   │   └── text5.txt
-│   └── data_clean2.py           # 数据清洗脚本
 ├── docs/
 │   └── direction_candidates.md
 ├── output/                  # 分析结果与可视化
@@ -50,6 +49,7 @@
 ├── reports/                     # 分析报告与过程
 │   └── data_quality.md
 ├── src/                         # 源代码
+│   └── data_clean2.py           # 数据清洗脚本
 ├── README.md                    # 项目说明文件
 └── requirements.txt             # Python依赖包清单
 ```
