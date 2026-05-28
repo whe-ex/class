@@ -61,7 +61,7 @@
 - CiteSpace：用于科学计量与知识图谱生成
 - VOSviewer：关键词共现与网络结构可视化
 - Python（pandas、numpy、matplotlib）：数据处理和绘图
-
+- ChatGPT：文本自动生成与润色、代码辅助生成
 ---
   
 ## 5.操作流程概述
