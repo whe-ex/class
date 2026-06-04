@@ -80,7 +80,16 @@
 
 ---
 
-## 6.可视化产出
+## 6.检索式
+TS=("silicon carbide" OR "SiC" OR "SiC technology" OR "SiC application" OR "power device" OR "power semiconductor" OR "SiC MOSFET")
+  AND TS=("Science research" OR "academic research" OR"CHINA" )
+  AND PY=2015-2025
+  AND DT=("Article" OR "Review")
+  AND LA= English
+  
+详细可见`config/query.yaml`
+
+## 7.可视化产出
 <img width="8069" height="5000" alt="作者合作" src="https://github.com/user-attachments/assets/3a730581-f1b4-4c5e-85ed-df502f331747" />
 <img width="8069" height="5000" alt="聚类图" src="https://github.com/user-attachments/assets/b23c61db-3711-427c-b04c-d0014204152a" />
 <img width="8069" height="5000" alt="时间线" src="https://github.com/user-attachments/assets/e3e2ee4f-b26a-40bf-af01-f88b21f9dfc7" />
@@ -89,7 +98,7 @@
 
 
 
-## 7.已完成内容
+## 8.已完成内容
 
 - 数据目录、配置文件、文档结构初步搭建
 - 数据清洗脚本：`data/data_clean2.py`
@@ -104,7 +113,7 @@
     - 共被引网络分析报告（`output/共被引网络分析报告.md`）
     - 文献引用特征分析表（`output/文献引用特征分析表.xlsx`）
 
-## 8.复现性说明
+## 9.复现性说明
 
 - 检索关键词统一，确保分析一致性
 - 原始数据文件与所用脚本全部保留
