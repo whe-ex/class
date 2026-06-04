@@ -81,15 +81,15 @@
 ---
 
 ## 6.检索式
-`TS=("silicon carbide" OR "SiC" OR "SiC technology" OR "SiC application" OR "power device" OR "power semiconductor" OR "SiC MOSFET")`
+```TS=("silicon carbide" OR "SiC" OR "SiC technology" OR "SiC application" OR "power device" OR "power semiconductor" OR "SiC MOSFET")
 
-  `AND TS=("Science research" OR "academic research" OR"CHINA" )`
+  AND TS=("Science research" OR "academic research" OR"CHINA" )
   
-  `AND PY=2015-2025`
+  AND PY=2015-2025
   
- `AND DT=("Article" OR "Review")`
+ AND DT=("Article" OR "Review")
   
-  `AND LA= English`
+  AND LA= English```
   
 详细可见`config/query.yaml`
 
