@@ -82,6 +82,7 @@
 
 ## 6.检索式
 TS=("silicon carbide" OR "SiC" OR "SiC technology" OR "SiC application" OR "power device" OR "power semiconductor" OR "SiC MOSFET")
+
   AND TS=("Science research" OR "academic research" OR"CHINA" )
   AND PY=2015-2025
   AND DT=("Article" OR "Review")
